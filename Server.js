@@ -150,7 +150,7 @@ setLinks();
       if((new Date().getTime()-players[i].lastActive) > 10000){
         var _id = player_ids[i];
         console.log("Player "+_id+" left the game");
-        //players_ready = 0;
+        players_ready = 0;
         //make ready
         var dex = player_ids.indexOf(_id);
         if(dex>-1){
