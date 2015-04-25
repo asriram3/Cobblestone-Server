@@ -21,6 +21,8 @@ function setLinks(){
       var player = new Object();
       player.alive = true;
       player.ready = false;
+      player.healthPack = false;
+      player.gamesWon = 0;
       player.lastActive = new Date().getTime();
       console.log(player.lastActive);
       players.push(player);
@@ -66,21 +68,49 @@ function setLinks(){
           for(var i=0; i<players.length; i++){
             players[i].alive = true;
             players[i].ready = false;
-            players_ready = 0;
             gameOn = false;
           }
+           players_ready = 0;
         
       }
     
     res.end("leave triggered");
   });
 
+
+
   app.get('/gameInfo', function(req, res){
       var _url = url.parse(req.url, true);
       var _id = _url.query["id"];
       var dex = player_ids.indexOf(_id);
+     
+      var info = new Object();
+      info.players = players.length;
+      info.ready = players_ready;
+      info.healthPack = players[dex].healthPack;
+      info.gameStatus = gameStatus;
+      res.end(JSON.stringify(info));
+
       if(dex>-1){
         players[dex].lastActive = new Date().getTime();
+        players[dex].healthPack = false;
+      }
+
+  });
+
+
+  app.get('/won', function(req, res){
+      var _url = url.parse(req.url, true);
+      var _id = _url.query["id"];
+      var dex = player_ids.indexOf(_id);
+      if(dex>-1){
+        players[dex].gamesWon++;
+        var assist = dex+1;
+        if(assist==players.length){
+          assist = 0;
+        }
+        players[assist].healthPack = true;
+
       }
       var info = new Object();
       info.players = players.length;
@@ -99,7 +129,11 @@ function setLinks(){
       res.write("gameStatus:"+gameStatus+"\n");
       res.write("PLAYERS{\n");
       for(var p=0; p<players.length; p++){
-        res.write(player_ids[p]+":"+(new Date().getTime()-players[p].lastActive)+"\n");
+        res.write("   "+player_ids[p]+":\n");
+        res.write("        LastPing: "+(new Date().getTime()-players[p].lastActive)+"\n");
+        res.write("        Games Won: "+(players[p].gamesWon)+"\n");
+        res.write("        HealthPack: "+(players[p].healthPack)+"\n");
+        res.write("        Alive: "+(players[p].alive)+"\n");
 
       }
     res.end("}");
@@ -113,9 +147,10 @@ setLinks();
   function server_check(){
     //console.log("Checking..");
     for(var i=0; i<players.length; i++){
-      if((new Date().getTime()-players[i].lastActive) > 10000){
+      if((new Date().getTime()-players[i].lastActive) > 1000000){
         var _id = player_ids[i];
         console.log("Player "+_id+" left the game");
+        //players_ready = 0;
         //make ready
         var dex = player_ids.indexOf(_id);
         if(dex>-1){
@@ -126,7 +161,6 @@ setLinks();
             for(var i=0; i<players.length; i++){
               players[i].alive = true;
               players[i].ready = false;
-              players_ready = 0;
               gameOn = false;
             }
         }
