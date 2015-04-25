@@ -21,6 +21,8 @@ function setLinks(){
       var player = new Object();
       player.alive = true;
       player.ready = false;
+      player.lastActive = new Date().getTime();
+      console.log(player.lastActive);
       players.push(player);
       res.end("Joined. Players:"+player_ids);
     }else{
@@ -74,11 +76,18 @@ function setLinks(){
   });
 
   app.get('/gameInfo', function(req, res){
+      var _url = url.parse(req.url, true);
+      var _id = _url.query["id"];
+      var dex = player_ids.indexOf(_id);
+      if(dex>-1){
+        players[dex].lastActive = new Date().getTime();
+      }
       var info = new Object();
       info.players = players.length;
       info.ready = players_ready;
       info.gameStatus = gameStatus;
       res.end(JSON.stringify(info));
+
   });
 
 }
@@ -88,6 +97,26 @@ setLinks();
 
   function server_check(){
     //console.log("Checking..");
+    for(var i=0; i<players.length; i++){
+      if(new Date().getTime()-players[i].lastActive > 6000){
+        var _id = player_ids[i];
+        console.log("Player "+_id+" left the game");
+        //make ready
+        var dex = player_ids.indexOf(_id);
+        if(dex>-1){
+          var player = players[dex];
+            gameStatus = "Lobby";
+            players.splice(dex,1);
+            player_ids.splice(dex,1);
+            for(var i=0; i<players.length; i++){
+              players[i].alive = true;
+              players[i].ready = false;
+              players_ready = 0;
+              gameOn = false;
+            }
+        }
+      }
+    }
   }
 
   if(do_once){
