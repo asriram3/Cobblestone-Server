@@ -48,6 +48,32 @@ function setLinks(){
     res.end("ready");
   });
 
+  app.get('/leave', function(req, res){
+    var _url = url.parse(req.url, true);
+    var _id = _url.query["id"];
+    console.log("Player "+_id+" left the game");
+
+    if(gameOn){
+      //make ready
+      var dex = player_ids.indexOf(_id);
+      if(dex>-1){
+        var player = players[dex];
+        if(player.ready){
+          gameStatus = "Lobby";
+          players.splice(dex,1);
+          player_ids.splice(dex,1);
+          for(var i=0; i<players.length; i++){
+            players[i].alive = true;
+            players[i].ready = false;
+            players_ready = 0;
+            gameOn = false;
+          }
+        }
+      }
+    }
+    res.end("leave triggered");
+  });
+
   app.get('/gameInfo', function(req, res){
       var info = new Object();
       info.players = players.length;
