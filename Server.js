@@ -2,89 +2,77 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var url = require('url');
 
 //Game Variables
 var players = Array();
-
+var player_ids = Array();
+var do_once = true;
+var gameOn = false;
+var players_ready = 0;
+var gameStatus = "Lobby";
 function setLinks(){
   app.get('/', function(req, res){
-   console.log("HE PINGED!");
-   var obj = new Object();
-   obj.name = "Raj";
-   obj.age  = 32;
-   obj.married = false;
-   var jsonString= JSON.stringify(obj);
-   res.send(obj);
+    var _url = url.parse(req.url, true);
+    var _id = _url.query["id"];
+    if(player_ids.indexOf(_id)==-1){
+      console.log("Player "+_id+" joined the game");
+      player_ids.push(_id);
+      var player = new Object();
+      player.alive = true;
+      player.ready = false;
+      players.push(player);
+      res.end("Joined. Players:"+player_ids);
+    }else{
+      res.end("RePinged");
+    }
   });
 
-  app.get('/js/JareUtils.js', function(req, res){
-    res.sendFile(__dirname + '/js/JareUtils.js');
+  app.get('/ready', function(req, res){
+    var _url = url.parse(req.url, true);
+    var _id = _url.query["id"];
+    if(!gameOn && players.length>1){
+      //make ready
+      var dex = player_ids.indexOf(_id);
+      var player = players[dex];
+      if(!player.ready){
+        player.ready = true;
+        players_ready++;
+        if(players_ready == players.length){
+          gameOn = true;
+          console.log("game started. Players:"+player_ids);
+          gameStatus = "Playing";
+        }
+      }
+    }
+    res.end("ready");
   });
 
-  app.get('/js/FPSMeter.js', function(req, res){
-    res.sendFile(__dirname + '/js/FPSMeter.js');
+  app.get('/gameInfo', function(req, res){
+      var info = new Object();
+      info.players = players.length;
+      info.ready = players_ready;
+      info.gameStatus = gameStatus;
+      res.end(JSON.stringify(info));
   });
 
-  app.get('/js/GameLoopManager.js', function(req, res){
-    res.sendFile(__dirname + '/js/GameLoopManager.js');
-  });
-
-  app.get('/js/Game.js', function(req, res){
-    res.sendFile(__dirname + '/js/Game.js');
-  });
 }
 setLinks();
 
 
 
-
-var logs = 0;
-var do_once = true;
-io.on('connection', function(socket){ 
-    glob_socket = socket; 
-  	socket.on('player_joined', function(player_id){
-  		res.send("hi");
-      //console.log("Player "+player_id+" joined.");
-	});
-
-  socket.on('moveRight', function(player_id){
- 		//moveRight
-  });
-  socket.on('moveLeft', function(player_id){
-     // giveFeed(player_id,socket);
-  });
-  socket.on('moveDown', function(player_id){
-      //giveFeed(player_id,socket);
-  });
-  socket.on('moveUp', function(player_id){
-     // giveFeed(player_id,socket);
-  });
-
-  socket.on('releaseRight', function(player_id){
-     // giveFeed(player_id,socket);
-  });
-  socket.on('releaseUp', function(player_id){
-      //giveFeed(player_id,socket);
-  });
-
-  socket.on('player_left', function(id){
-      //player_left
-
-  });
-
-
   function server_check(){
-  	console.log("Checking..");
+    //console.log("Checking..");
   }
 
   if(do_once){
     do_once = false;
     console.log("Server Initialized");
     setInterval(function(){
-     	server_check();
+      server_check();
     }, 75);
   }
 
-});
+
 
 http.listen(process.env.PORT || 5000);
