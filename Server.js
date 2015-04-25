@@ -90,6 +90,21 @@ function setLinks(){
 
   });
 
+
+  app.get('/debug', function(req, res){
+      var _url = url.parse(req.url, true);
+      var _id = _url.query["id"];
+      res.write("players:"+players.length+"\n");
+      res.write("ready:"+players_ready+"\n");
+      res.write("gameStatus:"+gameStatus+"\n");
+      res.write("PLAYERS{\n");
+      for(var p=0; p<players.length; p++){
+        res.write(player_ids[p]+":"+(new Date().getTime()-players[p].lastActive)+"\n");
+
+      }
+    res.end("}");
+  });
+
 }
 setLinks();
 
@@ -98,7 +113,7 @@ setLinks();
   function server_check(){
     //console.log("Checking..");
     for(var i=0; i<players.length; i++){
-      if(new Date().getTime()-players[i].lastActive > 6000){
+      if((new Date().getTime()-players[i].lastActive) > 30000){
         var _id = player_ids[i];
         console.log("Player "+_id+" left the game");
         //make ready
