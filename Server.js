@@ -147,7 +147,7 @@ setLinks();
   function server_check(){
     //console.log("Checking..");
     for(var i=0; i<players.length; i++){
-      if((new Date().getTime()-players[i].lastActive) > 1000000){
+      if((new Date().getTime()-players[i].lastActive) > 10000){
         var _id = player_ids[i];
         console.log("Player "+_id+" left the game");
         //players_ready = 0;
