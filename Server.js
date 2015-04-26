@@ -35,7 +35,7 @@ function setLinks(){
   app.get('/ready', function(req, res){
     var _url = url.parse(req.url, true);
     var _id = _url.query["id"];
-    if(!gameOn && players.length>1){
+    if(!gameOn /*&& players.length>1*/){
       //make ready
       var dex = player_ids.indexOf(_id);
       var player = players[dex];
