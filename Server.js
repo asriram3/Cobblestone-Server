@@ -10,6 +10,7 @@ var player_ids = Array();
 var do_once = true;
 var gameOn = false;
 var players_ready = 0;
+var games_won = 0;
 var gameStatus = "Lobby";
 function setLinks(){
   app.get('/', function(req, res){
@@ -22,7 +23,6 @@ function setLinks(){
       player.alive = true;
       player.ready = false;
       player.healthPack = false;
-      player.gamesWon = 0;
       player.lastActive = new Date().getTime();
       console.log(player.lastActive);
       players.push(player);
@@ -90,6 +90,7 @@ function setLinks(){
       info.healthPack = players[dex].healthPack;
       info.gameStatus = gameStatus;
       info.yourReady = players[dex].ready;
+      info.gamesWon = games_won;
       res.end(JSON.stringify(info));
 
       if(dex>-1){
@@ -104,6 +105,7 @@ function setLinks(){
       var _url = url.parse(req.url, true);
       var _id = _url.query["id"];
       var dex = player_ids.indexOf(_id);
+      games_won++;
       if(dex>-1){
         players[dex].gamesWon++;
         var assist = dex+1;
@@ -122,17 +124,28 @@ function setLinks(){
   });
 
 
+  app.get('/died', function(req, res){
+      var _url = url.parse(req.url, true);
+      var _id = _url.query["id"];
+      var dex = player_ids.indexOf(_id);
+      if(dex>-1){
+        players[dex].alive = false;
+
+      }
+      res.end("Death accepted");
+  });
+
   app.get('/debug', function(req, res){
       var _url = url.parse(req.url, true);
       var _id = _url.query["id"];
       res.write("players:"+players.length+"\n");
       res.write("ready:"+players_ready+"\n");
       res.write("gameStatus:"+gameStatus+"\n");
+      res.write("game won:"+games_won+"\n");
       res.write("PLAYERS{\n");
       for(var p=0; p<players.length; p++){
         res.write("   "+player_ids[p]+":\n");
         res.write("        LastPing: "+(new Date().getTime()-players[p].lastActive)+"\n");
-        res.write("        Games Won: "+(players[p].gamesWon)+"\n");
         res.write("        HealthPack: "+(players[p].healthPack)+"\n");
         res.write("        Alive: "+(players[p].alive)+"\n");
 
@@ -147,7 +160,11 @@ setLinks();
 
   function server_check(){
     //console.log("Checking..");
+    var survivor = false;
     for(var i=0; i<players.length; i++){
+      if(players[i].alive){
+        survivor = true;
+      }
       if((new Date().getTime()-players[i].lastActive) > 1000000){
         var _id = player_ids[i];
         console.log("Player "+_id+" left the game");
@@ -166,6 +183,15 @@ setLinks();
             }
         }
       }
+    }
+
+    if(!survivor){
+      gameStatus="over";
+      setTimeout(function restart_server(){ 
+          players_ready = 0;
+          games_won = 0;
+          gameStatus = "Lobby";
+        }, 10000);
     }
   }
 
