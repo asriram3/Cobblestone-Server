@@ -89,6 +89,7 @@ function setLinks(){
       info.ready = players_ready;
       info.healthPack = players[dex].healthPack;
       info.gameStatus = gameStatus;
+      info.yourReady = players[dex].ready;
       res.end(JSON.stringify(info));
 
       if(dex>-1){
