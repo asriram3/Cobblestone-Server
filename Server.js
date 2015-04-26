@@ -160,6 +160,7 @@ function setLinks(){
     gameStatus = "Lobby";
     players = new Array();
     player_ids = new Array();
+    gameOn = false;
     res.end("cleaned");
   });
 
