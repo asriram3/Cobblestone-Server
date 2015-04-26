@@ -148,9 +148,18 @@ function setLinks(){
         res.write("        LastPing: "+(new Date().getTime()-players[p].lastActive)+"\n");
         res.write("        HealthPack: "+(players[p].healthPack)+"\n");
         res.write("        Alive: "+(players[p].alive)+"\n");
+        res.write("        Ready: "+(players[p].ready)+"\n");
 
       }
     res.end("}");
+  });
+
+
+  app.get('/clean', function(req, res){
+    players_ready = 0;
+    gameStatus = "Lobby";
+    players = new Array();
+    res.end("cleaned");
   });
 
 }
@@ -185,7 +194,7 @@ setLinks();
       }
     }
 
-    if(!survivor){
+    if(!survivor && gameStatus==="Playing"){
       gameStatus="over";
       setTimeout(function restart_server(){ 
           players_ready = 0;
