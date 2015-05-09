@@ -66,7 +66,8 @@ var gameStatus = "Lobby";
 function setLinks(){
   
   app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+    res.end("Oi my boy");
+    //res.sendFile(__dirname + '/index.html');
   });
   app.get('/js/JareUtils.js', function(req, res){
     res.sendFile(__dirname + '/js/JareUtils.js');
@@ -81,7 +82,7 @@ function setLinks(){
     res.sendFile(__dirname + '/js/Game.js');
   });
 
-  
+
 
   app.get('/ready', function(req, res){
     var _url = url.parse(req.url, true);
