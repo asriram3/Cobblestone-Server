@@ -53,7 +53,7 @@ plane[x][y] = [255,255,255];
 
 var speed = 1;
 
-
+/*
 http2.createServer(function(req, res){
     fs.readFile('index.html',function (err, data){
         res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
@@ -61,24 +61,29 @@ http2.createServer(function(req, res){
         res.end();
     });
 }).listen(8000);
-
+*/
 
 function setLinks(){
 app.get('/', function(req, res){
   //res.sendFile(__dirname + '/index.html');
-  res.end("ended");
+   fs.readFile('index.html',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
+  //res.end("ended");
 });
 app.get('/js/JareUtils.js', function(req, res){
-  //res.sendFile(__dirname + '/js/JareUtils.js');
+  res.sendFile(__dirname + '/js/JareUtils.js');
 });
 app.get('/js/FPSMeter.js', function(req, res){
-  //res.sendFile(__dirname + '/js/FPSMeter.js');
+  res.sendFile(__dirname + '/js/FPSMeter.js');
 });
 app.get('/js/GameLoopManager.js', function(req, res){
-  //res.sendFile(__dirname + '/js/GameLoopManager.js');
+  res.sendFile(__dirname + '/js/GameLoopManager.js');
 });
 app.get('/js/Game.js', function(req, res){
-  //res.sendFile(__dirname + '/js/Game.js');
+  res.sendFile(__dirname + '/js/Game.js');
 });
 }
 setLinks();
