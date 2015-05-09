@@ -134,7 +134,7 @@ stage_width = 750;
 stage_height = 550;
 width = 10;
 height = 10;
-deathTime = 10;
+deathTime = 150;
 survive = 2*60;
 gameTicks = 0;
 gridX=Math.floor(stage_width/width)+1;
@@ -459,7 +459,24 @@ plane[players_x[id]][players_y[id]] = players_colour[id];
 }
 spawnZombies();
 moveZombies();
-}, 100);
+
+//merge zombies
+for(var i=0; i<zombies_x.length;i++){
+  var pos1 = ""+zombies_x[i]+":"+zombies_y[i];
+  //console.log("?");
+  for(var j=zombies_x.length-1; j>i;j--){
+    //console.log("!");
+    var pos2 = ""+zombies_x[j]+":"+zombies_y[j];
+    if(pos2===pos1){
+      zombies_x.splice(j,1);
+      zombies_y.splice(j,1);
+      zombies_walk.splice(j,1);
+    }
+  }
+}
+
+
+}, 75);
 }
 });
 
