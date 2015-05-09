@@ -74,16 +74,33 @@ app.get('/', function(req, res){
   //res.end("ended");
 });
 app.get('/js/JareUtils.js', function(req, res){
-  res.sendFile(__dirname + '/js/JareUtils.js');
+  //res.sendFile(__dirname + '/js/JareUtils.js');
+   fs.readFile('/js/JareUtils.js',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
 });
 app.get('/js/FPSMeter.js', function(req, res){
-  res.sendFile(__dirname + '/js/FPSMeter.js');
+   fs.readFile('/js/FPSMeter.js',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
 });
 app.get('/js/GameLoopManager.js', function(req, res){
-  res.sendFile(__dirname + '/js/GameLoopManager.js');
+  fs.readFile('/js/GameLoopManager.js',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
 });
 app.get('/js/Game.js', function(req, res){
-  res.sendFile(__dirname + '/js/Game.js');
+  fs.readFile('/js/Game.js',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
 });
 }
 setLinks();
