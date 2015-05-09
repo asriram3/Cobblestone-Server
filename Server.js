@@ -64,24 +64,24 @@ var games_won = 0;
 var gameStatus = "Lobby";
 
 function setLinks(){
+  
   app.get('/', function(req, res){
-    var _url = url.parse(req.url, true);
-    var _id = _url.query["id"];
-    if(player_ids.indexOf(_id)==-1){
-      console.log("Player "+_id+" joined the game");
-      player_ids.push(_id);
-      var player = new Object();
-      player.alive = true;
-      player.ready = false;
-      player.healthPack = false;
-      player.lastActive = new Date().getTime();
-      console.log(player.lastActive);
-      players.push(player);
-      res.end("Joined. Players:"+player_ids);
-    }else{
-      res.end("RePinged");
-    }
+  res.sendFile(__dirname + '/index.html');
   });
+  app.get('/js/JareUtils.js', function(req, res){
+    res.sendFile(__dirname + '/js/JareUtils.js');
+  });
+  app.get('/js/FPSMeter.js', function(req, res){
+    res.sendFile(__dirname + '/js/FPSMeter.js');
+  });
+  app.get('/js/GameLoopManager.js', function(req, res){
+    res.sendFile(__dirname + '/js/GameLoopManager.js');
+  });
+  app.get('/js/Game.js', function(req, res){
+    res.sendFile(__dirname + '/js/Game.js');
+  });
+
+  
 
   app.get('/ready', function(req, res){
     var _url = url.parse(req.url, true);
