@@ -4,14 +4,65 @@ var io = require('socket.io')(http);
 var fs = require('fs');
 var url = require('url');
 
-//Game Variables
+
+
+
 var players = Array();
+var players_x = Array();
+var players_y = Array();
+var players_colour = Array();
+var players_deathTimer = Array();
+var players_flashMod = Array();
+var players_bitten = Array();
+var players_alive = Array();
+var players_right = Array();
+var players_up = Array();
+var players_socket = Array();
+var dead_players = Array();
+var zombies_x = Array();
+var zombies_y = Array();
+var zombies_walk = Array();
+var zombie_timer = 20;
+var zombie_spawn = 5;
+var num_zombies = 0;
+var zomb_lagg = 6;
+var stage_width = 750;
+var stage_height = 550;
+var width = 10;
+var height = 10;
+var deathTime = 150;
+var survive = 2*60;
+var gameTicks = 0;
+
+var gridX=Math.floor(stage_width/width)+1;
+var gridY=Math.floor(stage_height/height)+1;
+console.log("GridX: "+gridX);
+console.log("GridY: "+gridY);
+var plane = new Array(gridX); //<- sets width
+var plane_vacancy = new Array(gridX);
+//var zombie_plane = new Array(gridX);
+for (var x = 0; x < plane.length; x++) {
+plane_vacancy[x] = new Array(gridY);
+plane[x] = new Array(gridY); //<- sets height
+//zombie_plane[x] = new Array(gridY);
+for(var y = 0; y<plane[x].length; y++){
+plane_vacancy[x][y] = Array();
+plane[x][y] = [255,255,255];
+// zombie_plane[x][y] = false;
+}
+}
+
+
+
+//Game Variables
+//var players = Array();
 var player_ids = Array();
 var do_once = true;
 var gameOn = false;
 var players_ready = 0;
 var games_won = 0;
 var gameStatus = "Lobby";
+
 function setLinks(){
   app.get('/', function(req, res){
     var _url = url.parse(req.url, true);
