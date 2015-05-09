@@ -3,6 +3,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
 //Game Variables
+
+/*
 var players = Array();
 var players_x = Array();
 var players_y = Array();
@@ -29,6 +31,7 @@ var height = 10;
 var deathTime = 150;
 var survive = 2*60;
 var gameTicks = 0;
+
 var gridX=Math.floor(stage_width/width)+1;
 var gridY=Math.floor(stage_height/height)+1;
 console.log("GridX: "+gridX);
@@ -46,25 +49,28 @@ plane[x][y] = [255,255,255];
 // zombie_plane[x][y] = false;
 }
 }
+*/
 var speed = 1;
 function setLinks(){
 app.get('/', function(req, res){
-res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
+  res.end("ended");
 });
 app.get('/js/JareUtils.js', function(req, res){
-res.sendFile(__dirname + '/js/JareUtils.js');
+  res.sendFile(__dirname + '/js/JareUtils.js');
 });
 app.get('/js/FPSMeter.js', function(req, res){
-res.sendFile(__dirname + '/js/FPSMeter.js');
+  res.sendFile(__dirname + '/js/FPSMeter.js');
 });
 app.get('/js/GameLoopManager.js', function(req, res){
-res.sendFile(__dirname + '/js/GameLoopManager.js');
+  res.sendFile(__dirname + '/js/GameLoopManager.js');
 });
 app.get('/js/Game.js', function(req, res){
-res.sendFile(__dirname + '/js/Game.js');
+  res.sendFile(__dirname + '/js/Game.js');
 });
 }
 setLinks();
+/*
 function randomColour(){
 return Math.round(((Math.random()*255)+255)/2);
 }
@@ -421,4 +427,5 @@ moveZombies();
 }, 75);
 }
 });
+*/
 http.listen(process.env.PORT || 5000);
