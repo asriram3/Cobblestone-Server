@@ -477,7 +477,7 @@ for(var i=0; i<zombies_x.length;i++){
 }
 
 
-}, 225);
+}, 250);
 }
 });
 
