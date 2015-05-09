@@ -459,7 +459,7 @@ plane[players_x[id]][players_y[id]] = players_colour[id];
 }
 spawnZombies();
 moveZombies();
-
+/*
 //merge zombies
 for(var i=0; i<zombies_x.length;i++){
   var pos1 = ""+zombies_x[i]+":"+zombies_y[i];
@@ -474,6 +474,7 @@ for(var i=0; i<zombies_x.length;i++){
       zombies_walk.splice(j,1);
     }
   }
+  */
 }
 
 
