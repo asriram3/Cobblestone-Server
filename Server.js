@@ -474,9 +474,8 @@ for(var i=0; i<zombies_x.length;i++){
       zombies_walk.splice(j,1);
     }
   }
-  */
 }
-
+*/
 
 }, 75);
 }
