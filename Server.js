@@ -255,7 +255,7 @@ plane[zomb_x][zomb_y] = [38,166,68];
 }
 function spawnZombies(){
 zombie_timer--;
-if(zombie_timer<0 && num_zombies<100){
+if(zombie_timer<0 && num_zombies<100 && players.length>0){
 num_zombies++;
 zombie_timer = zombie_spawn;
 zombies_walk.push(4);
@@ -468,6 +468,7 @@ for(var i=0; i<zombies_x.length;i++){
     //console.log("!");
     var pos2 = ""+zombies_x[j]+":"+zombies_y[j];
     if(pos2===pos1){
+      num_zombies--;
       zombies_x.splice(j,1);
       zombies_y.splice(j,1);
       zombies_walk.splice(j,1);
