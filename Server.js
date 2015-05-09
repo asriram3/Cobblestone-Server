@@ -255,7 +255,7 @@ plane[zomb_x][zomb_y] = [38,166,68];
 }
 function spawnZombies(){
 zombie_timer--;
-if(zombie_timer<0){
+if(zombie_timer<0 && num_zombies<100){
 num_zombies++;
 zombie_timer = zombie_spawn;
 zombies_walk.push(4);
@@ -459,7 +459,7 @@ plane[players_x[id]][players_y[id]] = players_colour[id];
 }
 spawnZombies();
 moveZombies();
-}, 75);
+}, 100);
 }
 });
 
