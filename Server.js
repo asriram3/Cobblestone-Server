@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var http2 = require('http');
 //Game Variables
 
 
@@ -51,6 +52,17 @@ plane[x][y] = [255,255,255];
 }
 
 var speed = 1;
+
+
+http2.createServer(function(req, res){
+    fs.readFile('index.html',function (err, data){
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+    });
+}).listen(8000);
+
+
 function setLinks(){
 app.get('/', function(req, res){
   //res.sendFile(__dirname + '/index.html');
