@@ -422,26 +422,6 @@ function doKeyUp(e){
 
 </div>
 </td><td>
-  <small>
-  *You may have to refresh a few times to wake up the server*
-  <h4>Summary</h4>
-<p>
-This was a small project I made a year ago using socketIO, Node and standard html5 canvas. It's essentially a multiplayer game in which you try to avoid the zombies(green squares). Try to survive until the timer runs down. Then the server refreshes the game and you can scurry once more.
-</p>
-<h4> Optimization and Hurdles</h4>
-<p>
-The initial objective was to make a game where we can dozens of players playing simutaneously on a free server so optimization was nessessary. The game essentially just one big matrix that all users have the ability to manipulate. The only data they send to the server are their key inputs (preventing any possible js injection hack), and with those inputs I am able to shift their ascribed block x or y position within the matrix. One nessessary feature of optimization is that the zombies merge when they share the same pixle/block, reducing computation time. 
-</p>
-
-<h4> Possible server lagg</h4>
-<p>
-The game runs flawlessly on lan, however on the free server I'm using I have to limit the number of zombies to 100 and reduce the fps from 35 to 10. Also theres an issue with the way azures server work, in that it would lagg immensly if there was a long period where nobody was playing.
-</p>
-<h4> Last words </h4>
-<p>
-So I hope this can display my proficiency with canvases and is more impressive than a purple block. Lastly If it means anything I could easily reproduce Nike's shoe canvas :P. 
-</p>
-</small>
 </td></table>
 </body>
 
