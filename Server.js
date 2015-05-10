@@ -30,7 +30,7 @@ var stage_height = 550;
 var width = 10;
 var height = 10;
 var deathTime = 150;
-var survive = 2*60;
+var survive = 60;
 var gameTicks = 0;
 
 var gridX=Math.floor(stage_width/width)+1;
@@ -135,7 +135,7 @@ stage_height = 550;
 width = 10;
 height = 10;
 deathTime = 150;
-survive = 2*60;
+survive = 60;
 gameTicks = 0;
 gridX=Math.floor(stage_width/width)+1;
 gridY=Math.floor(stage_height/height)+1;
